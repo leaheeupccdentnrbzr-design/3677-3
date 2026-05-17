@@ -1,0 +1,1287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="BLK Ultra — Premier financial information consulting in Bristol, England.">
+  <title>BLK Ultra | Financial Information Consulting</title>
+  <style>
+    :root {
+      /* Vintage palette */
+      --color-primary: #7A5C3E;
+      --color-primary-dark: #5C4033;
+      --color-primary-light: #9A7B5A;
+      --gradient-primary: linear-gradient(135deg, #5C4033 0%, #7A5C3E 45%, #8B6914 100%);
+      --gradient-hero: linear-gradient(145deg, #3D2914 0%, #5C4033 45%, #6B4423 100%);
+      --color-secondary: #7B2D26;
+      --color-secondary-dark: #5C1F1A;
+      --color-secondary-light: #9E3B32;
+      --color-accent: #1A1A1A;
+      --color-accent-soft: #2D2D2D;
+      --bg-page: #F5ECD7;
+      --bg-module: #EDE4D3;
+      --bg-module-alt: #E2D5BC;
+      --bg-card: #FAF6EE;
+      --accent-cyan: var(--color-secondary);
+      --accent-cyan-bright: var(--color-secondary-light);
+      --text-label: #4A3F32;
+      --text-muted: #5C5044;
+      --text-body: #2C2419;
+      --text-light: #F5ECD7;
+      --white: #FAF6EE;
+      --shadow: 0 4px 20px rgba(26, 26, 26, 0.1);
+      --shadow-lg: 0 16px 40px rgba(26, 26, 26, 0.14);
+      --border-ink: 2px solid var(--color-accent);
+      --radius: 6px;
+      --radius-lg: 10px;
+      --header-h: 72px;
+      --transition: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: Georgia, "Times New Roman", "Palatino Linotype", serif;
+      color: var(--text-body);
+      line-height: 1.65;
+      background: var(--bg-page);
+      overflow-x: hidden;
+    }
+    img { max-width: 100%; height: auto; display: block; }
+    a { color: inherit; text-decoration: none; }
+    ul { list-style: none; }
+
+    /* Header */
+    .site-header {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      height: var(--header-h);
+      background: rgba(245, 236, 215, 0.96);
+      backdrop-filter: blur(10px);
+      border-bottom: var(--border-ink);
+      box-shadow: 0 2px 0 var(--color-secondary);
+    }
+    .header-inner {
+      max-width: 1200px; margin: 0 auto; padding: 0 1rem;
+      height: 100%; display: flex; align-items: center; gap: 0.75rem;
+    }
+    .btn-back {
+      display: none; align-items: center; gap: 0.35rem;
+      padding: 0.45rem 0.85rem; border: none; border-radius: 8px;
+      background: var(--bg-module); color: var(--text-label);
+      font-size: 0.85rem; font-weight: 600; cursor: pointer;
+      transition: background var(--transition), color var(--transition);
+      flex-shrink: 0;
+    }
+    .btn-back.visible { display: inline-flex; }
+    .btn-back:hover { background: var(--bg-module-alt); color: var(--color-secondary); }
+    .logo {
+      font-size: 1.25rem; font-weight: 800; letter-spacing: 0.08em;
+      color: var(--color-accent);
+      -webkit-text-fill-color: var(--color-accent);
+      cursor: pointer; flex-shrink: 0;
+      font-family: Georgia, serif;
+    }
+    .logo span { font-weight: 600; }
+    .nav-desktop { display: flex; gap: 0.15rem; margin-left: auto; }
+    .nav-desktop a, .nav-mobile a {
+      padding: 0.45rem 0.75rem; font-size: 0.88rem; font-weight: 500;
+      color: var(--text-label); border-radius: 8px;
+      transition: color var(--transition), background var(--transition);
+      cursor: pointer;
+    }
+    .nav-desktop a:hover, .nav-desktop a.active,
+    .nav-mobile a:hover, .nav-mobile a.active {
+      color: var(--color-secondary); background: var(--bg-module);
+      border-bottom: 2px solid var(--color-accent);
+    }
+    .nav-toggle {
+      display: none; flex-direction: column; justify-content: center;
+      gap: 5px; width: 44px; height: 44px; border: none;
+      background: transparent; cursor: pointer; margin-left: auto;
+    }
+    .nav-toggle span {
+      display: block; height: 2px; background: var(--color-accent);
+      border-radius: 2px; transition: var(--transition);
+    }
+    .nav-toggle.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .nav-toggle.open span:nth-child(2) { opacity: 0; }
+    .nav-toggle.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+    .nav-mobile {
+      display: none; position: fixed; top: var(--header-h); left: 0; right: 0; bottom: 0;
+      background: var(--bg-page); padding: 1.5rem; flex-direction: column;
+      border-left: var(--border-ink);
+      gap: 0.5rem; z-index: 999; transform: translateX(100%);
+      transition: transform var(--transition); overflow-y: auto;
+    }
+    .nav-mobile.open { transform: translateX(0); }
+    .nav-mobile a { display: block; padding: 1rem 1.25rem; font-size: 1.05rem; font-weight: 600; }
+
+    /* Page views */
+    #app-main {
+      padding-top: var(--header-h);
+      min-height: 100vh;
+      position: relative;
+    }
+    .page-view {
+      display: none;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity var(--transition), transform var(--transition);
+    }
+    .page-view.active,
+    .page-view.leaving {
+      display: block;
+    }
+    .page-view.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .page-view.leaving {
+      opacity: 0;
+      transform: translateY(-14px);
+      pointer-events: none;
+    }
+    .page-inner { max-width: 1200px; margin: 0 auto; padding: 2rem 1.25rem 3rem; }
+
+    .section-label {
+      display: inline-block; font-size: 0.72rem; font-weight: 700;
+      letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--color-secondary); margin-bottom: 0.6rem;
+      border-bottom: 1px solid var(--color-secondary);
+      padding-bottom: 0.25rem;
+    }
+    .section-title {
+      font-size: clamp(1.6rem, 4vw, 2.35rem);
+      font-weight: 700; margin-bottom: 0.75rem; line-height: 1.2;
+      color: var(--color-accent);
+      font-family: Georgia, serif;
+    }
+    .section-desc {
+      font-size: 1.02rem; color: var(--text-muted);
+      max-width: 720px; margin-bottom: 2rem;
+    }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      gap: 0.5rem; padding: 0.8rem 1.6rem; font-size: 0.92rem;
+      font-weight: 600; border: none; border-radius: 10px; cursor: pointer;
+      transition: transform 0.2s, box-shadow var(--transition), background var(--transition);
+    }
+    .btn-primary {
+      background: var(--color-primary); color: var(--text-light);
+      border: var(--border-ink);
+      box-shadow: 3px 3px 0 var(--color-accent);
+    }
+    .btn-primary:hover { transform: translate(-1px, -1px); box-shadow: 4px 4px 0 var(--color-accent); }
+    .btn-outline {
+      background: transparent; color: var(--color-accent);
+      border: var(--border-ink);
+    }
+    .btn-outline:hover { background: var(--bg-module); color: var(--color-secondary); }
+    .btn-ghost {
+      background: var(--bg-module); color: var(--text-label);
+      border: 1px solid var(--color-accent);
+    }
+    .btn-ghost:hover { background: var(--bg-module-alt); color: var(--color-secondary); }
+    .btn-sm { padding: 0.5rem 1rem; font-size: 0.82rem; }
+
+    /* Toast feedback */
+    .toast {
+      position: fixed; bottom: 1.5rem; left: 50%;
+      transform: translateX(-50%) translateY(80px);
+      background: var(--color-accent); color: var(--text-light);
+      padding: 0.75rem 1.5rem; border-radius: 4px;
+      font-size: 0.9rem; font-weight: 500; z-index: 2000;
+      opacity: 0; transition: transform 0.35s, opacity 0.35s;
+      box-shadow: var(--shadow-lg); pointer-events: none;
+      border-left: 4px solid var(--color-secondary);
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    /* HOME */
+    #page-home .hero-banner {
+      background: var(--gradient-hero); color: var(--text-light);
+      padding: 3rem 1.25rem 4rem; margin: -2rem -1.25rem 2rem;
+      position: relative; overflow: hidden;
+    }
+    #page-home .hero-banner::before {
+      content: ""; position: absolute; inset: 0;
+      background: radial-gradient(ellipse 70% 50% at 80% 10%, rgba(123, 45, 38, 0.25), transparent);
+    }
+    #page-home .hero-banner::after {
+      content: ""; position: absolute; inset: 0;
+      background: repeating-linear-gradient(
+        90deg,
+        transparent,
+        transparent 48px,
+        rgba(26, 26, 26, 0.03) 48px,
+        rgba(26, 26, 26, 0.03) 49px
+      );
+      pointer-events: none;
+    }
+    .hero-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem;
+      align-items: center; position: relative; z-index: 1;
+      max-width: 1200px; margin: 0 auto;
+    }
+    .hero-grid h1 {
+      font-size: clamp(1.85rem, 4.5vw, 3rem); font-weight: 800;
+      line-height: 1.15; margin-bottom: 1rem;
+    }
+    .hero-grid h1 { color: var(--text-light); }
+    .hero-grid h1 em { font-style: normal; color: var(--color-secondary-light); }
+    #page-home .hero-banner .section-label {
+      color: var(--color-secondary-light);
+      border-bottom-color: var(--color-secondary-light);
+    }
+    .hero-grid p { opacity: 0.92; margin-bottom: 1.5rem; font-size: 1.05rem; }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+    .hero-btn-light {
+      color: var(--text-light) !important;
+      border-color: var(--text-light) !important;
+    }
+    .hero-btn-light:hover {
+      background: rgba(245, 236, 215, 0.15) !important;
+      color: var(--text-light) !important;
+    }
+    .hero-main-img {
+      border-radius: var(--radius-lg); box-shadow: var(--shadow-lg);
+      border: var(--border-ink); aspect-ratio: 16/10;
+      object-fit: cover; width: 100%;
+    }
+    .hero-gallery {
+      display: grid; grid-template-columns: repeat(3,1fr);
+      gap: 0.6rem; margin-top: 0.75rem;
+    }
+    .hero-gallery img {
+      border-radius: var(--radius); aspect-ratio: 4/3; object-fit: cover;
+      border: 2px solid var(--color-secondary);
+    }
+    .stats-strip {
+      display: grid; grid-template-columns: repeat(4,1fr);
+      gap: 1rem; margin-bottom: 2.5rem;
+    }
+    .stat-card {
+      background: var(--bg-card); border-radius: var(--radius);
+      padding: 1.25rem; text-align: center;
+      border: var(--border-ink);
+      box-shadow: 3px 3px 0 var(--color-secondary);
+    }
+    .stat-card .value {
+      font-size: 1.6rem; font-weight: 800; color: var(--color-primary);
+      font-family: Georgia, serif;
+    }
+    .stat-card .label { font-size: 0.78rem; color: var(--text-label); margin-top: 0.25rem; }
+
+    .portal-grid {
+      display: grid; grid-template-columns: repeat(3,1fr); gap: 1.25rem;
+    }
+    .portal-card {
+      background: var(--bg-card); border-radius: var(--radius-lg);
+      overflow: hidden; box-shadow: var(--shadow);
+      border: var(--border-ink);
+      cursor: pointer; transition: transform var(--transition), box-shadow var(--transition);
+    }
+    .portal-card:hover {
+      transform: translateY(-6px); box-shadow: var(--shadow-lg);
+    }
+    .portal-card:active { transform: translateY(-2px); }
+    .portal-card img { width: 100%; aspect-ratio: 16/10; object-fit: cover; }
+    .portal-card .pc-body { padding: 1.25rem; }
+    .portal-card h3 { font-size: 1.05rem; margin-bottom: 0.35rem; }
+    .portal-card p { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.75rem; }
+    .portal-card .pc-link {
+      font-size: 0.85rem; font-weight: 600; color: var(--color-secondary);
+      display: flex; align-items: center; gap: 0.35rem;
+    }
+    .portal-card .pc-link::after { content: "→"; transition: transform 0.2s; }
+    .portal-card:hover .pc-link::after { transform: translateX(4px); }
+
+    /* Sub-page hero */
+    .sub-hero {
+      background: var(--gradient-hero); color: var(--text-light);
+      padding: 2.5rem 1.25rem; margin: -2rem -1.25rem 2rem;
+      border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+      border-bottom: 4px solid var(--color-secondary);
+    }
+    .sub-hero .section-title { color: var(--text-light); margin-bottom: 0.5rem; }
+    .sub-hero .section-label { color: var(--color-secondary-light); border-bottom-color: var(--color-secondary-light); }
+    .sub-hero .section-desc { color: rgba(245, 236, 215, 0.9); margin-bottom: 0; }
+
+    /* Tabs */
+    .tab-bar {
+      display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.75rem;
+    }
+    .tab-btn {
+      padding: 0.6rem 1.2rem; border: 1px solid var(--color-accent); border-radius: 4px;
+      font-size: 0.88rem; font-weight: 600; cursor: pointer;
+      background: var(--bg-module); color: var(--text-label);
+      transition: background var(--transition), color var(--transition), box-shadow 0.2s;
+    }
+    .tab-btn.active {
+      background: var(--color-primary); color: var(--text-light);
+      border: var(--border-ink);
+      box-shadow: 2px 2px 0 var(--color-accent);
+    }
+    .tab-panel { display: none; animation: fadeIn 0.35s ease; }
+    .tab-panel.active { display: block; }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Filter chips */
+    .filter-bar { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.5rem; }
+    .filter-chip {
+      padding: 0.45rem 1rem; border-radius: 4px; font-size: 0.82rem;
+      font-weight: 600; border: 1px solid var(--color-accent);
+      background: var(--bg-card); color: var(--text-label); cursor: pointer;
+      transition: all 0.25s;
+    }
+    .filter-chip.active {
+      border-color: var(--color-accent); background: rgba(123, 45, 38, 0.12);
+      color: var(--color-secondary-dark);
+    }
+    .filter-chip:active { transform: scale(0.96); }
+
+    /* Cards grid */
+    .cards-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 1.25rem; }
+    .info-card {
+      background: var(--bg-card); border-radius: var(--radius);
+      padding: 1.5rem; border-left: 4px solid var(--color-secondary);
+      border: var(--border-ink); border-left-width: 4px; border-left-color: var(--color-secondary);
+      transition: opacity 0.3s, transform 0.3s;
+    }
+    .info-card.hidden { display: none; }
+    .info-card h4 { margin-bottom: 0.5rem; color: var(--color-accent); }
+    .info-card p { font-size: 0.9rem; color: var(--text-muted); }
+
+    .content-block { margin-bottom: 2rem; }
+    .content-block h3 { font-size: 1.15rem; margin-bottom: 0.75rem; color: var(--color-accent); }
+    .content-block p { color: var(--text-muted); margin-bottom: 0.75rem; font-size: 0.95rem; }
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: start; }
+    .feature-img {
+      border-radius: var(--radius-lg); box-shadow: var(--shadow);
+      aspect-ratio: 16/10; object-fit: cover; width: 100%;
+    }
+
+    /* Timeline */
+    .timeline { position: relative; padding-left: 1.5rem; }
+    .timeline::before {
+      content: ""; position: absolute; left: 0; top: 0; bottom: 0;
+      width: 3px; background: var(--gradient-primary); border-radius: 2px;
+    }
+    .timeline-item {
+      position: relative; padding-bottom: 1.5rem; padding-left: 1.25rem;
+    }
+    .timeline-item::before {
+      content: ""; position: absolute; left: -1.65rem; top: 0.35rem;
+      width: 12px; height: 12px; background: var(--color-secondary);
+      border-radius: 50%; border: 2px solid var(--bg-page);
+      box-shadow: 0 0 0 2px var(--color-accent);
+    }
+    .timeline-item strong { color: var(--color-secondary); font-size: 0.85rem; }
+    .timeline-item h4 { margin: 0.25rem 0; }
+    .timeline-item p { font-size: 0.88rem; color: var(--text-muted); }
+
+    /* Services */
+    .service-item {
+      background: var(--bg-card); border-radius: var(--radius);
+      padding: 1.25rem; box-shadow: var(--shadow);
+      border: var(--border-ink);
+      cursor: pointer; transition: all var(--transition);
+    }
+    .service-item:hover { border-color: var(--color-secondary); transform: translateX(4px); }
+    .service-item.selected {
+      border-color: var(--color-accent);
+      background: var(--bg-module);
+      box-shadow: 3px 3px 0 var(--color-secondary);
+    }
+    .service-item h4 { margin-bottom: 0.35rem; display: flex; align-items: center; gap: 0.5rem; color: var(--color-accent); }
+    .service-item .si-icon { color: var(--color-secondary); }
+    .service-item p { font-size: 0.88rem; color: var(--text-muted); }
+  .services-layout { display: grid; grid-template-columns: 1fr 1.2fr; gap: 1.5rem; }
+    .service-detail-panel {
+      background: var(--bg-card); border-radius: var(--radius-lg);
+      padding: 1.75rem; min-height: 280px;
+      transition: opacity 0.3s;
+      border: var(--border-ink);
+    }
+    .service-detail-panel img {
+      width: 100%; aspect-ratio: 16/9; object-fit: cover;
+      border-radius: var(--radius); margin-bottom: 1rem;
+    }
+    .service-detail-panel h3 { margin-bottom: 0.75rem; color: var(--color-accent); }
+    .service-detail-panel ul {
+      margin-top: 1rem; font-size: 0.9rem; color: var(--text-muted);
+    }
+    .service-detail-panel ul li {
+      padding: 0.4rem 0; border-bottom: 1px solid rgba(55,65,81,0.1);
+      display: flex; align-items: center; gap: 0.5rem;
+    }
+    .service-detail-panel ul li::before {
+      content: "✓"; color: var(--color-secondary); font-weight: 700;
+    }
+
+    /* Insights dashboard */
+    .data-dashboard {
+      display: grid; grid-template-columns: repeat(4,1fr); gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .data-module {
+      background: var(--bg-card); border-radius: var(--radius);
+      padding: 1.25rem; border: var(--border-ink);
+      border-left: 4px solid var(--color-secondary);
+      transition: transform 0.3s;
+    }
+    .data-module.updated { animation: pulse 0.5s ease; }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.03); box-shadow: 0 0 16px rgba(123, 45, 38, 0.35); }
+    }
+    .data-module .metric {
+      font-size: 1.75rem; font-weight: 800; color: var(--color-accent);
+      transition: color 0.3s;
+    }
+    .data-module .metric-label { font-size: 0.78rem; color: var(--text-label); font-weight: 600; margin-top: 0.35rem; }
+    .data-module .metric-desc { font-size: 0.72rem; color: var(--text-muted); margin-top: 0.2rem; }
+
+    .sector-list { background: var(--bg-module); border-radius: var(--radius-lg); padding: 1.5rem; }
+    .sector-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 0.7rem 0; border-bottom: 1px solid rgba(55,65,81,0.08);
+      font-size: 0.9rem; transition: opacity 0.3s, transform 0.3s;
+    }
+    .sector-row.hidden { display: none; }
+    .sector-row span:last-child { font-weight: 700; color: var(--color-secondary); }
+    .toggle-group {
+      display: inline-flex; background: var(--bg-module); border-radius: 10px; padding: 4px;
+    }
+    .toggle-btn {
+      padding: 0.5rem 1rem; border: none; border-radius: 8px;
+      font-size: 0.82rem; font-weight: 600; cursor: pointer;
+      background: transparent; color: var(--text-label);
+      transition: all 0.25s;
+    }
+    .toggle-btn.active {
+      background: var(--bg-card); color: var(--color-accent);
+      border: 1px solid var(--color-accent);
+      box-shadow: 2px 2px 0 var(--color-secondary);
+    }
+
+    /* Team */
+    .team-cards { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.25rem; }
+    .team-member {
+      background: var(--bg-card); border-radius: var(--radius-lg);
+      overflow: hidden; box-shadow: var(--shadow); cursor: pointer;
+      border: var(--border-ink); transition: all var(--transition);
+    }
+    .team-member:hover { transform: translateY(-4px); border-color: var(--color-secondary); }
+    .team-member.active {
+      border-color: var(--color-accent);
+      box-shadow: 4px 4px 0 var(--color-secondary);
+    }
+    .team-member img { aspect-ratio: 1; object-fit: cover; width: 100%; }
+    .team-member .tm-info { padding: 1.25rem; }
+    .team-member h4 { margin-bottom: 0.2rem; }
+    .team-member .role { font-size: 0.82rem; color: var(--color-secondary); font-weight: 600; }
+    .team-detail-box {
+      margin-top: 1.5rem; background: var(--gradient-hero);
+      color: var(--text-light); border-radius: var(--radius-lg);
+      padding: 2rem; display: none;
+    }
+    .team-detail-box.show { display: block; animation: fadeIn 0.35s ease; }
+    .team-detail-box h3 { margin-bottom: 0.5rem; }
+    .team-detail-box .role { color: var(--color-secondary-light); margin-bottom: 1rem; }
+    .team-detail-box p { opacity: 0.9; margin-bottom: 0.75rem; font-size: 0.95rem; }
+    .skill-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1rem; }
+    .skill-tag {
+      padding: 0.35rem 0.85rem; background: rgba(255,255,255,0.15);
+      border-radius: 50px; font-size: 0.78rem;
+    }
+
+    /* Accordion */
+    .accordion-item {
+      border: 1px solid var(--bg-module-alt); border-radius: var(--radius);
+      margin-bottom: 0.6rem; overflow: hidden;
+    }
+    .accordion-head {
+      width: 100%; padding: 1rem 1.25rem; border: none; background: var(--bg-module);
+      text-align: left; font-size: 0.95rem; font-weight: 600;
+      color: var(--text-body); cursor: pointer;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .accordion-head::after { content: "+"; font-size: 1.2rem; color: var(--color-secondary); transition: transform 0.25s; }
+    .accordion-item.open .accordion-head::after { transform: rotate(45deg); }
+    .accordion-body {
+      max-height: 0; overflow: hidden; transition: max-height 0.35s ease;
+      background: var(--bg-card);
+    }
+    .accordion-item.open .accordion-body { max-height: 200px; }
+    .accordion-body p { padding: 0 1.25rem 1rem; font-size: 0.9rem; color: var(--text-muted); }
+
+    /* Contact */
+    .contact-layout { display: grid; grid-template-columns: 1fr 1.3fr; gap: 2rem; }
+    .contact-card {
+      background: var(--gradient-hero); color: var(--text-light);
+      border-radius: var(--radius-lg); padding: 2rem;
+      border: var(--border-ink);
+      box-shadow: 4px 4px 0 var(--color-secondary);
+    }
+    .contact-card h3 { margin-bottom: 1.25rem; }
+    .contact-row { display: flex; gap: 1rem; margin-bottom: 1rem; align-items: flex-start; }
+    .contact-row .ci { font-size: 1.2rem; }
+    .contact-row strong { display: block; font-size: 0.75rem; opacity: 0.85; }
+    .contact-row p, .contact-row a { font-size: 0.95rem; color: var(--white); }
+    .form-wrap {
+      background: var(--bg-card); border-radius: var(--radius-lg);
+      padding: 2rem; box-shadow: var(--shadow);
+      border: var(--border-ink);
+    }
+    .form-group { margin-bottom: 1rem; }
+    .form-group label {
+      display: block; font-size: 0.82rem; font-weight: 600;
+      color: var(--text-label); margin-bottom: 0.35rem;
+    }
+    .form-group input, .form-group textarea, .form-group select {
+      width: 100%; padding: 0.8rem 1rem;
+      border: 1px solid var(--color-accent);
+      border-radius: var(--radius);
+      font-size: 1rem; font-family: inherit;
+      background: var(--bg-page);
+    }
+    .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+      outline: none; border-color: var(--color-accent);
+      box-shadow: 0 0 0 3px rgba(123, 45, 38, 0.2);
+    }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .form-success { display: none; text-align: center; padding: 2rem; }
+    .form-success.show { display: block; }
+    .form-success .ok {
+      width: 64px; height: 64px; margin: 0 auto 1rem;
+      border: 3px solid var(--color-secondary); border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.75rem; color: var(--color-accent);
+    }
+
+    .portal-card h3 { color: var(--color-accent); }
+
+    /* Footer */
+    .site-footer {
+      background: var(--color-accent); color: var(--bg-module);
+      padding: 2rem 1.25rem; margin-top: 2rem;
+      border-top: 4px solid var(--color-secondary);
+    }
+    .footer-inner { max-width: 1200px; margin: 0 auto; text-align: center; font-size: 0.85rem; }
+    .footer-inner a { color: var(--color-secondary-light); }
+
+    @media (max-width: 1024px) {
+      .hero-grid, .two-col, .services-layout, .contact-layout { grid-template-columns: 1fr; }
+      .portal-grid, .team-cards { grid-template-columns: repeat(2,1fr); }
+      .data-dashboard, .stats-strip { grid-template-columns: repeat(2,1fr); }
+      .cards-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 768px) {
+      .nav-desktop { display: none; }
+      .nav-toggle { display: flex; }
+      .nav-mobile { display: flex; }
+      .portal-grid, .team-cards { grid-template-columns: 1fr; }
+      .data-dashboard, .stats-strip { grid-template-columns: 1fr; }
+      .form-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <button type="button" class="btn-back" id="btnBack" aria-label="Go back">← Back</button>
+      <a class="logo" data-route="home" id="logoBtn">BLK<span>Ultra</span></a>
+      <nav class="nav-desktop" aria-label="Main">
+        <a data-route="home">Home</a>
+        <a data-route="about">About</a>
+        <a data-route="services">Services</a>
+        <a data-route="insights">Insights</a>
+        <a data-route="team">Team</a>
+        <a data-route="contact">Contact</a>
+      </nav>
+      <button class="nav-toggle" id="navToggle" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </header>
+
+  <nav class="nav-mobile" id="navMobile">
+    <a data-route="home">Home</a>
+    <a data-route="about">About Us</a>
+    <a data-route="services">Services</a>
+    <a data-route="insights">Market Insights</a>
+    <a data-route="team">Our Team</a>
+    <a data-route="contact">Contact Us</a>
+  </nav>
+
+  <div class="toast" id="toast"></div>
+
+  <main id="app-main">
+
+    <!-- HOME -->
+    <div id="page-home" class="page-view active" data-page="home">
+      <div class="hero-banner">
+        <div class="hero-grid">
+          <div>
+            <p class="section-label">Financial Intelligence</p>
+            <h1>Strategic <em>Information</em> Consulting for Global Markets</h1>
+            <p>BLK Ultra empowers institutions and investors with rigorous financial intelligence — from Bristol to the world.</p>
+            <div class="hero-actions">
+              <button type="button" class="btn btn-primary" data-route="contact">Get in Touch</button>
+              <button type="button" class="btn btn-outline hero-btn-light" data-route="services">Explore Services</button>
+            </div>
+          </div>
+          <div>
+            <img class="hero-main-img" src="https://leaheeupccdentnrbzr-design.github.io/3677-3/36.jpg" alt="BLK Ultra">
+            <div class="hero-gallery">
+              <img src="https://leaheeupccdentnrbzr-design.github.io/3677-3/37.jpg" alt="">
+              <img src="https://leaheeupccdentnrbzr-design.github.io/3677-3/38.jpg" alt="">
+              <img src="https://leaheeupccdentnrbzr-design.github.io/3677-3/39.jpg" alt="">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="page-inner">
+        <div class="stats-strip">
+          <div class="stat-card"><div class="value">15+</div><div class="label">Years Experience</div></div>
+          <div class="stat-card"><div class="value">200+</div><div class="label">Institutional Clients</div></div>
+          <div class="stat-card"><div class="value">98%</div><div class="label">Client Retention</div></div>
+          <div class="stat-card"><div class="value">24/7</div><div class="label">Market Monitoring</div></div>
+        </div>
+        <span class="section-label">Explore BLK Ultra</span>
+        <h2 class="section-title">Discover Our Expertise</h2>
+        <p class="section-desc">Select a section below to learn more. Each area offers in-depth content, interactive tools, and tailored intelligence for your organisation.</p>
+        <div class="portal-grid">
+          <article class="portal-card" data-route="about">
+            <img src="https://leaheeupccdentnrbzr-design.github.io/3677-3/40.jpg" alt="About">
+            <div class="pc-body"><h3>About Us</h3><p>Our story, mission, milestones and values in financial consulting.</p><span class="pc-link">Enter page</span></div>
+          </article>
+          <article class="portal-card" data-route="services">
+            <img src="https://leaheeupccdentnrbzr-design.github.io/3677-3/41.jpg" alt="Services">
+            <div class="pc-body"><h3>Our Services</h3><p>Browse and filter consulting offerings with detailed capability briefs.</p><span class="pc-link">Enter page</span></div>
+          </article>
+          <article class="portal-card" data-route="insights">
+            <img src="https://leaheeupccdentnrbzr-design.github.io/3677-3/42.jpg" alt="Insights">
+            <div class="pc-body"><h3>Market Insights</h3><p>Live-style dashboard with period toggles and sector filters.</p><span class="pc-link">Enter page</span></div>
+          </article>
+          <article class="portal-card" data-route="team">
+            <img src="https://leaheeupccdentnrbzr-design.github.io/3677-3/43.jpg" alt="Team">
+            <div class="pc-body"><h3>Our Team</h3><p>Meet leadership and specialists — click profiles for full bios.</p><span class="pc-link">Enter page</span></div>
+          </article>
+          <article class="portal-card" data-route="contact">
+            <img src="https://leaheeupccdentnrbzr-design.github.io/3677-3/44.jpg" alt="Contact">
+            <div class="pc-body"><h3>Contact Us</h3><p>Reach our Bristol office, submit enquiries, and browse FAQs.</p><span class="pc-link">Enter page</span></div>
+          </article>
+          <article class="portal-card" data-route="services" data-filter="esg">
+            <img src="https://leaheeupccdentnrbzr-design.github.io/3677-3/45.jpg" alt="ESG">
+            <div class="pc-body"><h3>ESG Intelligence</h3><p>Jump directly to sustainable finance consulting services.</p><span class="pc-link">Enter page</span></div>
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <!-- ABOUT -->
+    <div id="page-about" class="page-view" data-page="about">
+      <div class="page-inner">
+        <div class="sub-hero">
+          <span class="section-label">Who We Are</span>
+          <h2 class="section-title">About BLK Ultra</h2>
+          <p class="section-desc">A Bristol-based financial information consultancy trusted by institutions worldwide for integrity, precision, and actionable intelligence.</p>
+        </div>
+        <div class="tab-bar" id="aboutTabs">
+          <button type="button" class="tab-btn active" data-tab="story">Our Story</button>
+          <button type="button" class="tab-btn" data-tab="mission">Mission & Vision</button>
+          <button type="button" class="tab-btn" data-tab="milestones">Milestones</button>
+          <button type="button" class="tab-btn" data-tab="values">Core Values</button>
+        </div>
+        <div id="tab-story" class="tab-panel active">
+          <div class="two-col">
+            <div>
+              <div class="content-block">
+                <h3>Building Trust Since 2009</h3>
+                <p>BLK Ultra was founded in Bristol with a singular focus: to bridge the gap between raw financial data and executive decision-making. What began as a boutique research desk has evolved into a full-spectrum information consultancy serving asset managers, banks, and corporate treasury teams across Europe and beyond.</p>
+                <p>Our analysts combine buy-side experience with academic rigour, ensuring every deliverable meets institutional standards for accuracy, timeliness, and compliance.</p>
+              </div>
+              <div class="content-block">
+                <h3>Global Reach, Local Roots</h3>
+                <p>Headquartered at 98 Corn St in the heart of Bristol's financial district, we maintain a hybrid delivery model — on-site workshops, secure digital portals, and 24/7 alert systems tailored to each client's workflow.</p>
+              </div>
+            </div>
+            <img class="feature-img" src="https://leaheeupccdentnrbzr-design.github.io/3677-3/46.jpg" alt="Office">
+          </div>
+        </div>
+        <div id="tab-mission" class="tab-panel">
+          <div class="cards-grid">
+            <div class="info-card">
+              <h4>Our Mission</h4>
+              <p>To deliver unbiased, decision-ready financial intelligence that empowers our clients to navigate complexity with confidence and clarity.</p>
+            </div>
+            <div class="info-card">
+              <h4>Our Vision</h4>
+              <p>To be the most trusted information partner for institutional investors seeking excellence in research quality, ethical standards, and innovation.</p>
+            </div>
+            <div class="info-card">
+              <h4>Our Promise</h4>
+              <p>Every engagement is governed by strict confidentiality protocols, independent analysis, and transparent methodology documentation.</p>
+            </div>
+            <div class="info-card">
+              <h4>Our Approach</h4>
+              <p>We integrate quantitative models with qualitative expert judgment — never relying on single-source data without rigorous validation.</p>
+            </div>
+          </div>
+        </div>
+        <div id="tab-milestones" class="tab-panel">
+          <div class="timeline">
+            <div class="timeline-item"><strong>2009</strong><h4>Company Founded</h4><p>Launched in Bristol with a team of five senior analysts.</p></div>
+            <div class="timeline-item"><strong>2014</strong><h4>European Expansion</h4><p>Opened client desks serving Frankfurt, Paris, and Amsterdam markets.</p></div>
+            <div class="timeline-item"><strong>2018</strong><h4>ESG Practice Launch</h4><p>Introduced dedicated sustainable finance intelligence unit.</p></div>
+            <div class="timeline-item"><strong>2022</strong><h4>Digital Platform</h4><p>Rolled out real-time client portal with API integrations.</p></div>
+            <div class="timeline-item"><strong>2026</strong><h4>200+ Clients</h4><p>Celebrated milestone of 200 institutional relationships worldwide.</p></div>
+          </div>
+        </div>
+        <div id="tab-values" class="tab-panel">
+          <div class="cards-grid">
+            <div class="info-card"><h4>Integrity First</h4><p>Unbiased reporting aligned with FCA principles and global compliance frameworks.</p></div>
+            <div class="info-card"><h4>Precision Analytics</h4><p>Models validated by PhD economists and CFA charterholders with 15+ years experience.</p></div>
+            <div class="info-card"><h4>Client Centricity</h4><p>Bespoke packages from weekly briefings to embedded analyst support.</p></div>
+            <div class="info-card"><h4>Continuous Innovation</h4><p>Annual investment in AI-assisted screening while preserving human oversight.</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SERVICES -->
+    <div id="page-services" class="page-view" data-page="services">
+      <div class="page-inner">
+        <div class="sub-hero">
+          <span class="section-label">What We Offer</span>
+          <h2 class="section-title">Consulting Services</h2>
+          <p class="section-desc">Filter by category, click any service to view full capabilities. All packages are customisable to your mandate.</p>
+        </div>
+        <div class="filter-bar" id="serviceFilters">
+          <button type="button" class="filter-chip active" data-filter="all">All Services</button>
+          <button type="button" class="filter-chip" data-filter="research">Research</button>
+          <button type="button" class="filter-chip" data-filter="risk">Risk & Compliance</button>
+          <button type="button" class="filter-chip" data-filter="strategy">Strategy</button>
+          <button type="button" class="filter-chip" data-filter="esg">ESG</button>
+        </div>
+        <div class="services-layout">
+          <div class="services-list" id="servicesList">
+            <div class="service-item selected" data-id="research" data-cat="research">
+              <h4><span class="si-icon">📊</span> Market Research & Intelligence</h4>
+              <p>Sector reports, competitor benchmarking, real-time surveillance.</p>
+            </div>
+            <div class="service-item" data-id="risk" data-cat="risk">
+              <h4><span class="si-icon">⚡</span> Risk Advisory & Compliance</h4>
+              <p>Regulatory mapping, stress testing, compliance intelligence.</p>
+            </div>
+            <div class="service-item" data-id="strategy" data-cat="strategy">
+              <h4><span class="si-icon">📈</span> Investment Strategy Support</h4>
+              <p>Portfolio analytics, allocation modelling, thematic research.</p>
+            </div>
+            <div class="service-item" data-id="macro" data-cat="research">
+              <h4><span class="si-icon">🌐</span> Macroeconomic Analysis</h4>
+              <p>Central bank tracking, GDP forecasts, capital flow intelligence.</p>
+            </div>
+            <div class="service-item" data-id="esg" data-cat="esg">
+              <h4><span class="si-icon">♻</span> ESG & Sustainable Finance</h4>
+              <p>ESG scoring, green bonds, sustainability disclosure advisory.</p>
+            </div>
+            <div class="service-item" data-id="custom" data-cat="strategy">
+              <h4><span class="si-icon">🔍</span> Custom Data Solutions</h4>
+              <p>Dashboards, API integrations, proprietary datasets.</p>
+            </div>
+          </div>
+          <div class="service-detail-panel" id="serviceDetail">
+            <img src="https://leaheeupccdentnrbzr-design.github.io/3677-3/47.jpg" alt="">
+            <h3 id="sdTitle">Market Research & Intelligence</h3>
+            <p id="sdDesc">Comprehensive sector coverage across equities, fixed income, and alternatives with daily monitoring alerts.</p>
+            <ul id="sdList">
+              <li>Custom sector deep-dives (30+ pages)</li>
+              <li>Competitor positioning matrices</li>
+              <li>Event-driven flash notes within 2 hours</li>
+              <li>Quarterly thematic outlook reports</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- INSIGHTS -->
+    <div id="page-insights" class="page-view" data-page="insights">
+      <div class="page-inner">
+        <div class="sub-hero">
+          <span class="section-label">Market Pulse</span>
+          <h2 class="section-title">Financial Insights Dashboard</h2>
+          <p class="section-desc">Toggle reporting periods and filter sectors — metrics update instantly with visual feedback.</p>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:1rem;align-items:center;margin-bottom:1.5rem">
+          <span style="font-size:0.85rem;font-weight:600;color:var(--text-label)">Period:</span>
+          <div class="toggle-group" id="periodToggle">
+            <button type="button" class="toggle-btn active" data-period="daily">Daily</button>
+            <button type="button" class="toggle-btn" data-period="weekly">Weekly</button>
+            <button type="button" class="toggle-btn" data-period="monthly">Monthly</button>
+          </div>
+        </div>
+        <div class="data-dashboard" id="metricsPanel">
+          <div class="data-module"><div class="metric" data-key="ftse">+0.8%</div><div class="metric-label">FTSE 100 Change</div><div class="metric-desc" id="ftseDesc">Daily close</div></div>
+          <div class="data-module"><div class="metric" data-key="boe">4.25%</div><div class="metric-label">BoE Base Rate</div><div class="metric-desc">Policy snapshot</div></div>
+          <div class="data-module"><div class="metric" data-key="gbp">£1.27</div><div class="metric-label">GBP/USD</div><div class="metric-desc">Spot reference</div></div>
+          <div class="data-module"><div class="metric" data-key="risk">72.4</div><div class="metric-label">Risk Sentiment Index</div><div class="metric-desc">BLK Ultra proprietary</div></div>
+        </div>
+        <span style="font-size:0.85rem;font-weight:600;color:var(--text-label);display:block;margin-bottom:0.75rem">Filter sectors:</span>
+        <div class="filter-bar" id="sectorFilters">
+          <button type="button" class="filter-chip active" data-sector="all">All Sectors</button>
+          <button type="button" class="filter-chip" data-sector="financial">Financial</button>
+          <button type="button" class="filter-chip" data-sector="tech">Technology</button>
+          <button type="button" class="filter-chip" data-sector="energy">Energy</button>
+          <button type="button" class="filter-chip" data-sector="health">Healthcare</button>
+        </div>
+        <div class="two-col">
+          <div class="sector-list" id="sectorList">
+            <div class="sector-row" data-sector="financial"><span>Financial Services</span><span class="sv">+1.8%</span></div>
+            <div class="sector-row" data-sector="tech"><span>Technology & Innovation</span><span class="sv">+3.2%</span></div>
+            <div class="sector-row" data-sector="energy"><span>Energy & Utilities</span><span class="sv">-0.6%</span></div>
+            <div class="sector-row" data-sector="health"><span>Healthcare & Pharma</span><span class="sv">+0.9%</span></div>
+            <div class="sector-row" data-sector="financial"><span>Real Estate & REITs</span><span class="sv">-1.1%</span></div>
+            <div class="sector-row" data-sector="tech"><span>Consumer Discretionary</span><span class="sv">+2.1%</span></div>
+          </div>
+          <img class="feature-img" src="https://leaheeupccdentnrbzr-design.github.io/3677-3/48.jpg" alt="Chart">
+        </div>
+      </div>
+    </div>
+
+    <!-- TEAM -->
+    <div id="page-team" class="page-view" data-page="team">
+      <div class="page-inner">
+        <div class="sub-hero">
+          <span class="section-label">Leadership</span>
+          <h2 class="section-title">Our Expert Team</h2>
+          <p class="section-desc">Filter by department and click a profile to expand biography, expertise, and contact preferences.</p>
+        </div>
+        <div class="filter-bar" id="teamFilters">
+          <button type="button" class="filter-chip active" data-dept="all">All Departments</button>
+          <button type="button" class="filter-chip" data-dept="executive">Executive</button>
+          <button type="button" class="filter-chip" data-dept="research">Research</button>
+          <button type="button" class="filter-chip" data-dept="advisory">Advisory</button>
+        </div>
+        <div class="team-cards" id="teamCards">
+          <div class="team-member active" data-id="james" data-dept="executive">
+            <img src="https://leaheeupccdentnrbzr-design.github.io/3677-3/49.jpg" alt="James">
+            <div class="tm-info"><h4>James Whitfield</h4><p class="role">Chief Executive Officer</p></div>
+          </div>
+          <div class="team-member" data-id="sarah" data-dept="research">
+            <img src="https://leaheeupccdentnrbzr-design.github.io/3677-3/50.jpg" alt="Sarah">
+            <div class="tm-info"><h4>Sarah Chen</h4><p class="role">Head of Research</p></div>
+          </div>
+          <div class="team-member" data-id="david" data-dept="advisory">
+            <img src="https://leaheeupccdentnrbzr-design.github.io/3677-3/51.jpg" alt="David">
+            <div class="tm-info"><h4>David Okonkwo</h4><p class="role">Director of Client Advisory</p></div>
+          </div>
+          <div class="team-member" data-id="emma" data-dept="research">
+            <img src="https://leaheeupccdentnrbzr-design.github.io/3677-3/52.jpg" alt="Emma">
+            <div class="tm-info"><h4>Emma Richardson</h4><p class="role">Senior Macro Analyst</p></div>
+          </div>
+          <div class="team-member" data-id="michael" data-dept="advisory">
+            <img src="https://leaheeupccdentnrbzr-design.github.io/3677-3/53.jpg" alt="Michael">
+            <div class="tm-info"><h4>Michael Torres</h4><p class="role">Compliance Lead</p></div>
+          </div>
+          <div class="team-member" data-id="lisa" data-dept="executive">
+            <img src="https://leaheeupccdentnrbzr-design.github.io/3677-3/54.jpg" alt="Lisa">
+            <div class="tm-info"><h4>Lisa Park</h4><p class="role">Chief Operating Officer</p></div>
+          </div>
+        </div>
+        <div class="team-detail-box show" id="teamDetail">
+          <h3 id="tdName">James Whitfield</h3>
+          <p class="role" id="tdRole">Chief Executive Officer</p>
+          <p id="tdBio">Former Managing Director at a Tier-1 investment bank with 20+ years leading global research divisions. James founded BLK Ultra to deliver institutional-grade intelligence with boutique agility.</p>
+          <div class="skill-tags" id="tdTags">
+            <span class="skill-tag">Leadership</span>
+            <span class="skill-tag">Strategy</span>
+            <span class="skill-tag">Institutional Sales</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CONTACT -->
+    <div id="page-contact" class="page-view" data-page="contact">
+      <div class="page-inner">
+        <div class="sub-hero">
+          <span class="section-label">Reach Out</span>
+          <h2 class="section-title">Contact Us</h2>
+          <p class="section-desc">Submit an enquiry — any submission receives instant confirmation. Browse FAQs below.</p>
+        </div>
+        <div class="contact-layout">
+          <div class="contact-card">
+            <h3>Get in Touch</h3>
+            <div class="contact-row"><span class="ci">📍</span><div><strong>Address</strong><p>57 Lancaster Rd, Preston, England</p></div></div>
+            <div class="contact-row"><span class="ci">📞</span><div><strong>Phone</strong><p><a href="tel:+44 7736752454">+44 7736752454</a></p></div></div>
+            <div class="contact-row"><span class="ci">✉</span><div><strong>Email</strong><p><a href="mailto:info@BLK Ultra.com">info@BLK Ultra.com</a></p></div></div>
+            <div class="contact-row"><span class="ci">🕐</span><div><strong>Hours</strong><p>Mon – Fri, 9:00 – 18:00 GMT</p></div></div>
+          </div>
+          <div class="form-wrap">
+            <div id="formBox">
+              <h3 style="margin-bottom:1rem">Send a Message</h3>
+              <form id="contactForm">
+                <div class="form-row">
+                  <div class="form-group"><label>First Name</label><input type="text" name="firstName"></div>
+                  <div class="form-group"><label>Last Name</label><input type="text" name="lastName"></div>
+                </div>
+                <div class="form-group"><label>Email</label><input type="email" name="email"></div>
+                <div class="form-group"><label>Message</label><textarea name="message" rows="4"></textarea></div>
+                <button type="submit" class="btn btn-primary" style="width:100%">Submit Enquiry</button>
+              </form>
+            </div>
+            <div class="form-success" id="formSuccess">
+              <div class="ok">✓</div>
+              <h3>Submission Successful</h3>
+              <p>Thank you — your message has been received. We will respond within one business day.</p>
+              <button type="button" class="btn btn-ghost" id="resetForm" style="margin-top:1rem">Send Another</button>
+            </div>
+          </div>
+        </div>
+        <h3 style="margin:2rem 0 1rem">Frequently Asked Questions</h3>
+        <div id="faqAccordion">
+          <div class="accordion-item"><button type="button" class="accordion-head">What industries do you cover?</button><div class="accordion-body"><p>We cover all major GICS sectors with dedicated analyst pods for financials, technology, healthcare, energy, and industrials.</p></div></div>
+          <div class="accordion-item"><button type="button" class="accordion-head">How quickly can you deliver custom research?</button><div class="accordion-body"><p>Standard turnaround is 5–10 business days; rush delivery within 48 hours is available for retainer clients.</p></div></div>
+          <div class="accordion-item"><button type="button" class="accordion-head">Is my data kept confidential?</button><div class="accordion-body"><p>Yes — all engagements are covered by NDAs and ISO-aligned information security protocols.</p></div></div>
+      </div>
+    </div>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <p>&copy; 2026 BLK Ultra Ltd · 57 Lancaster Rd, Preston, England · <a href="tel:+44 7736752454">+44 7736752454</a></p>
+    </div>
+  </footer>
+
+  <script>
+  (function () {
+    var IMG = 'https://leaheeupccdentnrbzr-design.github.io/3677-3/55.jpg';
+    var pages = document.querySelectorAll('.page-view');
+    var navLinks = document.querySelectorAll('[data-route]');
+    var btnBack = document.getElementById('btnBack');
+    var navToggle = document.getElementById('navToggle');
+    var navMobile = document.getElementById('navMobile');
+    var toast = document.getElementById('toast');
+    var historyStack = ['home'];
+    var currentPage = 'home';
+    var transitioning = false;
+
+    var periodData = {
+      daily: { ftse: '+0.8%', boe: '4.25%', gbp: '£1.27', risk: '72.4', desc: 'Daily close' },
+      weekly: { ftse: '+2.4%', boe: '4.25%', gbp: '£1.26', risk: '68.2', desc: 'Weekly aggregate' },
+      monthly: { ftse: '+5.1%', boe: '4.25%', gbp: '£1.24', risk: '61.8', desc: 'Monthly performance' }
+    };
+
+    var serviceData = {
+      research: { title: 'Market Research & Intelligence', desc: 'Comprehensive sector coverage across equities, fixed income, and alternatives with daily monitoring alerts.', list: ['Custom sector deep-dives (30+ pages)', 'Competitor positioning matrices', 'Event-driven flash notes within 2 hours', 'Quarterly thematic outlook reports'] },
+      risk: { title: 'Risk Advisory & Compliance', desc: 'Navigate evolving regulatory landscapes with proactive compliance intelligence and stress testing.', list: ['MiFID II / EMIR mapping', 'ICAAP & ILAAP support frameworks', 'Scenario analysis & stress tests', 'Regulatory horizon scanning'] },
+      strategy: { title: 'Investment Strategy Support', desc: 'Portfolio analytics and thematic research for fund managers and family offices.', list: ['Asset allocation optimisation', 'Factor exposure analysis', 'Thematic basket construction', 'Performance attribution reporting'] },
+      macro: { title: 'Macroeconomic Analysis', desc: 'Central bank policy tracking and cross-border capital flow intelligence.', list: ['GDP & inflation nowcasting', 'Rate path probability models', 'FX fair value estimates', 'Geopolitical risk briefings'] },
+      esg: { title: 'ESG & Sustainable Finance', desc: 'Integrate sustainability into investment processes with rigorous ESG methodologies.', list: ['ESG scoring & controversy screening', 'Green bond & sustainability-linked analysis', 'TCFD / ISSB disclosure support', 'Climate scenario modelling'] },
+      custom: { title: 'Custom Data Solutions', desc: 'Bespoke dashboards and API integrations for your organisation.', list: ['Real-time data feeds', 'Custom KPI dashboards', 'Secure API endpoints', 'White-label research portals'] }
+    };
+
+    var teamData = {
+      james: { name: 'James Whitfield', role: 'Chief Executive Officer', bio: 'Former MD at a Tier-1 investment bank with 20+ years leading global research. Founded BLK Ultra to combine institutional rigour with boutique service.', tags: ['Leadership', 'Strategy', 'Institutional Sales'] },
+      sarah: { name: 'Sarah Chen', role: 'Head of Research', bio: 'PhD in Econometrics from LSE. Sarah leads our quantitative research team and macro strategy publications.', tags: ['Econometrics', 'Macro Strategy', 'Quant Models'] },
+      david: { name: 'David Okonkwo', role: 'Director of Client Advisory', bio: 'Expert in regulatory compliance and relationship management for asset managers and pension funds.', tags: ['Compliance', 'Client Relations', 'Regulation'] },
+      emma: { name: 'Emma Richardson', role: 'Senior Macro Analyst', bio: 'Former BoE economist specialising in UK monetary policy and inflation dynamics.', tags: ['Monetary Policy', 'UK Markets', 'Inflation'] },
+      michael: { name: 'Michael Torres', role: 'Compliance Lead', bio: '15 years in financial regulation including FCA supervisory experience.', tags: ['FCA', 'AML', 'Governance'] },
+      lisa: { name: 'Lisa Park', role: 'Chief Operating Officer', bio: 'Operations strategist ensuring seamless delivery across global client engagements.', tags: ['Operations', 'Process', 'Scaling'] }
+    };
+
+    function showToast(msg) {
+      toast.textContent = msg;
+      toast.classList.add('show');
+      setTimeout(function () { toast.classList.remove('show'); }, 2800);
+    }
+
+    function setActiveNav(pageId) {
+      document.querySelectorAll('.nav-desktop a, .nav-mobile a').forEach(function (a) {
+        if (a.getAttribute('data-route') === pageId) a.classList.add('active');
+        else a.classList.remove('active');
+      });
+    }
+
+    function updateBackButton() {
+      if (currentPage !== 'home') btnBack.classList.add('visible');
+      else btnBack.classList.remove('visible');
+    }
+
+    function closeMobileNav() {
+      navToggle.classList.remove('open');
+      navMobile.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    function navigateTo(pageId, opts) {
+      opts = opts || {};
+      if (pageId === currentPage && opts.filter) {
+        if (pageId === 'services') applyServiceFilter(opts.filter);
+        showToast('Filter applied');
+        return;
+      }
+      if (transitioning || pageId === currentPage) return;
+      var next = document.getElementById('page-' + pageId);
+      var curr = document.getElementById('page-' + currentPage);
+      if (!next) return;
+
+      transitioning = true;
+      closeMobileNav();
+
+      if (curr) {
+        curr.classList.add('leaving');
+        curr.classList.remove('active');
+      }
+
+      setTimeout(function () {
+        if (curr) curr.classList.remove('leaving');
+        pages.forEach(function (p) { p.classList.remove('active'); });
+        next.classList.add('active');
+        window.scrollTo(0, 0);
+        currentPage = pageId;
+
+        if (opts.replace) {
+          historyStack = pageId === 'home' ? ['home'] : ['home', pageId];
+        } else if (opts.push !== false && historyStack[historyStack.length - 1] !== pageId) {
+          historyStack.push(pageId);
+        }
+
+        setActiveNav(pageId);
+        updateBackButton();
+        if (history.pushState) history.pushState({ page: pageId, stack: historyStack.slice() }, '', '#' + pageId);
+        transitioning = false;
+
+        if (opts.filter) applyServiceFilter(opts.filter);
+        initPageInteractions(pageId);
+      }, 280);
+    }
+
+    function goBack() {
+      if (historyStack.length > 1) {
+        historyStack.pop();
+        navigateTo(historyStack[historyStack.length - 1], { push: false });
+        showToast('Returned to previous page');
+      } else if (currentPage !== 'home') {
+        historyStack = ['home'];
+        navigateTo('home', { push: false });
+        showToast('Back to Home');
+      }
+    }
+
+    btnBack.addEventListener('click', goBack);
+
+    navLinks.forEach(function (el) {
+      el.addEventListener('click', function (e) {
+        e.preventDefault();
+        var route = el.getAttribute('data-route');
+        var filter = el.getAttribute('data-filter');
+        if (!route) return;
+        navigateTo(route, { push: false, replace: true, filter: filter });
+        if (route !== 'home') showToast('Opened: ' + route.charAt(0).toUpperCase() + route.slice(1));
+      });
+    });
+
+    document.querySelectorAll('.portal-card').forEach(function (card) {
+      card.addEventListener('click', function () {
+        var route = card.getAttribute('data-route');
+        var filter = card.getAttribute('data-filter');
+        navigateTo(route, { push: false, replace: true, filter: filter });
+        showToast('Opening ' + route + '...');
+      });
+    });
+
+    navToggle.addEventListener('click', function () {
+      navToggle.classList.toggle('open');
+      navMobile.classList.toggle('open');
+      document.body.style.overflow = navMobile.classList.contains('open') ? 'hidden' : '';
+    });
+
+    window.addEventListener('popstate', function (e) {
+      if (e.state && e.state.page) {
+        historyStack = e.state.stack || ['home', e.state.page];
+        navigateTo(e.state.page, { push: false });
+      } else {
+        goBack();
+      }
+    });
+
+    /* About tabs */
+    document.getElementById('aboutTabs').addEventListener('click', function (e) {
+      var btn = e.target.closest('.tab-btn');
+      if (!btn) return;
+      document.querySelectorAll('#aboutTabs .tab-btn').forEach(function (b) { b.classList.remove('active'); });
+      document.querySelectorAll('#page-about .tab-panel').forEach(function (p) { p.classList.remove('active'); });
+      btn.classList.add('active');
+      document.getElementById('tab-' + btn.getAttribute('data-tab')).classList.add('active');
+      showToast('Viewing: ' + btn.textContent);
+    });
+
+    /* Services */
+    function applyServiceFilter(cat) {
+      document.querySelectorAll('#serviceFilters .filter-chip').forEach(function (c) {
+        c.classList.toggle('active', c.getAttribute('data-filter') === cat || (cat === 'all' && c.getAttribute('data-filter') === 'all'));
+      });
+      var firstId = 'research';
+      document.querySelectorAll('#servicesList .service-item').forEach(function (item) {
+        var ic = item.getAttribute('data-cat');
+        if (cat === 'all' || ic === cat) {
+          item.style.display = '';
+          if (cat !== 'all' && ic === cat) firstId = item.getAttribute('data-id');
+        } else item.style.display = 'none';
+      });
+      if (cat === 'esg') firstId = 'esg';
+      document.querySelectorAll('#servicesList .service-item').forEach(function (i) {
+        i.classList.toggle('selected', i.getAttribute('data-id') === firstId);
+      });
+      showServiceDetail(firstId);
+    }
+
+    document.getElementById('serviceFilters').addEventListener('click', function (e) {
+      var chip = e.target.closest('.filter-chip');
+      if (!chip) return;
+      document.querySelectorAll('#serviceFilters .filter-chip').forEach(function (c) { c.classList.remove('active'); });
+      chip.classList.add('active');
+      applyServiceFilter(chip.getAttribute('data-filter'));
+      showToast('Filtered: ' + chip.textContent);
+    });
+
+    function showServiceDetail(id) {
+      var d = serviceData[id];
+      if (!d) return;
+      document.getElementById('sdTitle').textContent = d.title;
+      document.getElementById('sdDesc').textContent = d.desc;
+      var ul = document.getElementById('sdList');
+      ul.innerHTML = d.list.map(function (l) { return '<li>' + l + '</li>'; }).join('');
+      document.getElementById('serviceDetail').style.opacity = '0.5';
+      setTimeout(function () { document.getElementById('serviceDetail').style.opacity = '1'; }, 150);
+    }
+
+    document.getElementById('servicesList').addEventListener('click', function (e) {
+      var item = e.target.closest('.service-item');
+      if (!item || item.style.display === 'none') return;
+      document.querySelectorAll('#servicesList .service-item').forEach(function (i) { i.classList.remove('selected'); });
+      item.classList.add('selected');
+      showServiceDetail(item.getAttribute('data-id'));
+      showToast('Selected: ' + item.querySelector('h4').textContent.trim());
+    });
+
+    /* Insights period toggle */
+    document.getElementById('periodToggle').addEventListener('click', function (e) {
+      var btn = e.target.closest('.toggle-btn');
+      if (!btn) return;
+      document.querySelectorAll('#periodToggle .toggle-btn').forEach(function (b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      var p = btn.getAttribute('data-period');
+      var data = periodData[p];
+      document.querySelectorAll('#metricsPanel .data-module').forEach(function (mod) {
+        mod.classList.add('updated');
+        setTimeout(function () { mod.classList.remove('updated'); }, 500);
+      });
+      document.querySelector('[data-key="ftse"]').textContent = data.ftse;
+      document.querySelector('[data-key="boe"]').textContent = data.boe;
+      document.querySelector('[data-key="gbp"]').textContent = data.gbp;
+      document.querySelector('[data-key="risk"]').textContent = data.risk;
+      document.getElementById('ftseDesc').textContent = data.desc;
+      document.querySelectorAll('#sectorList .sv').forEach(function (sv, i) {
+        var mult = p === 'daily' ? 1 : p === 'weekly' ? 1.2 : 1.5;
+        var base = [1.8, 3.2, -0.6, 0.9, -1.1, 2.1][i];
+        var val = (base * mult).toFixed(1);
+        sv.textContent = (val >= 0 ? '+' : '') + val + '%';
+      });
+      showToast('Period switched to ' + p.charAt(0).toUpperCase() + p.slice(1));
+    });
+
+    document.getElementById('sectorFilters').addEventListener('click', function (e) {
+      var chip = e.target.closest('.filter-chip');
+      if (!chip) return;
+      document.querySelectorAll('#sectorFilters .filter-chip').forEach(function (c) { c.classList.remove('active'); });
+      chip.classList.add('active');
+      var sec = chip.getAttribute('data-sector');
+      document.querySelectorAll('#sectorList .sector-row').forEach(function (row) {
+        if (sec === 'all' || row.getAttribute('data-sector') === sec) row.classList.remove('hidden');
+        else row.classList.add('hidden');
+      });
+      showToast(sec === 'all' ? 'Showing all sectors' : 'Filtered: ' + chip.textContent);
+    });
+
+    /* Team */
+    document.getElementById('teamFilters').addEventListener('click', function (e) {
+      var chip = e.target.closest('.filter-chip');
+      if (!chip) return;
+      document.querySelectorAll('#teamFilters .filter-chip').forEach(function (c) { c.classList.remove('active'); });
+      chip.classList.add('active');
+      var dept = chip.getAttribute('data-dept');
+      document.querySelectorAll('#teamCards .team-member').forEach(function (m) {
+        if (dept === 'all' || m.getAttribute('data-dept') === dept) m.style.display = '';
+        else m.style.display = 'none';
+      });
+      showToast('Department: ' + chip.textContent);
+    });
+
+    document.getElementById('teamCards').addEventListener('click', function (e) {
+      var member = e.target.closest('.team-member');
+      if (!member || member.style.display === 'none') return;
+      var id = member.getAttribute('data-id');
+      var d = teamData[id];
+      document.querySelectorAll('#teamCards .team-member').forEach(function (m) { m.classList.remove('active'); });
+      member.classList.add('active');
+      document.getElementById('tdName').textContent = d.name;
+      document.getElementById('tdRole').textContent = d.role;
+      document.getElementById('tdBio').textContent = d.bio;
+      document.getElementById('tdTags').innerHTML = d.tags.map(function (t) { return '<span class="skill-tag">' + t + '</span>'; }).join('');
+      var box = document.getElementById('teamDetail');
+      box.classList.remove('show');
+      void box.offsetWidth;
+      box.classList.add('show');
+      showToast('Profile: ' + d.name);
+    });
+
+    /* FAQ accordion */
+    document.getElementById('faqAccordion').addEventListener('click', function (e) {
+      var head = e.target.closest('.accordion-head');
+      if (!head) return;
+      var item = head.parentElement;
+      var wasOpen = item.classList.contains('open');
+      document.querySelectorAll('#faqAccordion .accordion-item').forEach(function (i) { i.classList.remove('open'); });
+      if (!wasOpen) item.classList.add('open');
+    });
+
+    /* Contact form */
+    document.getElementById('contactForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+      document.getElementById('formBox').style.display = 'none';
+      document.getElementById('formSuccess').classList.add('show');
+      showToast('Submission successful!');
+    });
+    document.getElementById('resetForm').addEventListener('click', function () {
+      document.getElementById('contactForm').reset();
+      document.getElementById('formSuccess').classList.remove('show');
+      document.getElementById('formBox').style.display = 'block';
+      showToast('Form reset — ready for new message');
+    });
+
+    function initPageInteractions(pageId) {
+      if (pageId === 'services') showServiceDetail('research');
+    }
+
+    if (location.hash) {
+      var id = location.hash.slice(1);
+      if (document.getElementById('page-' + id)) {
+        historyStack = ['home', id];
+        setTimeout(function () { navigateTo(id, { push: false }); }, 50);
+      }
+    }
+
+    history.replaceState({ page: 'home', stack: ['home'] }, '', '#home');
+    setActiveNav('home');
+  })();
+  </script>
+</body>
+</html>
